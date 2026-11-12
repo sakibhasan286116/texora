@@ -1,5 +1,5 @@
 /* Texora service worker — app-shell cache only. The Pexels video is streamed, never cached. */
-const CACHE = 'texora-shell-v3';
+const CACHE = 'texora-shell-v4';
 const SHELL = [
   '/',
   '/index.html',

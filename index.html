@@ -75,17 +75,22 @@ nav a:hover::after{transform:scaleX(1)}
 .motion-toggle[aria-checked="true"] .track::after{transform:translateX(14px);background:var(--neon)}
 
 /* ============ HERO ============ */
-.hero{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center}
+.hero{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center;isolation:isolate}
 .grid-lines{
   position:absolute;inset:0;pointer-events:none;
   background:repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 12.5vw);
+  /* Dedicated overlay layer, promoted once: the shimmer below animates opacity only,
+     so the compositor fades the pre-painted gradient layer without repainting it. */
+  transform:translateZ(0);will-change:opacity;
   animation:gridShimmer 9s ease-in-out infinite;
 }
 @keyframes gridShimmer{0%,100%{opacity:.55}50%{opacity:1}}
 .hero-glow{
   position:absolute;top:8%;right:-6%;width:62vw;height:62vw;max-width:820px;max-height:820px;
-  background:radial-gradient(circle,rgba(255,230,0,.17) 0%,rgba(255,230,0,.05) 42%,transparent 68%);
-  filter:blur(28px);border-radius:50%;pointer-events:none;
+  /* Softness is baked into the gradient falloff (pre-rendered layer) — no live filter,
+     so the breathe animation below stays transform/opacity-only on the compositor. */
+  background:radial-gradient(circle,rgba(255,230,0,.17) 0%,rgba(255,230,0,.05) 42%,rgba(255,230,0,.015) 58%,transparent 72%);
+  border-radius:50%;pointer-events:none;will-change:transform,opacity;
   animation:breathe 4.2s ease-in-out infinite;
 }
 @keyframes breathe{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.09);opacity:1}}
@@ -150,6 +155,10 @@ body:not(.motion-on) .rise{opacity:1;transform:none}
   position:absolute;z-index:5;right:clamp(18px,4vw,54px);bottom:34px;width:min(580px,calc(100vw - 36px));
   display:grid;grid-template-columns:1fr 1fr;gap:0;
   background:rgba(14,15,11,.55);border:1px solid rgba(255,255,255,.1);border-radius:14px;
+  /* Same blur, same glassy look — but the panel gets its own composited layer /
+     stacking context, so hero animations behind it don't drag the panel into
+     unrelated repaints; its backdrop only re-samples when its own area changes. */
+  transform:translateZ(0);isolation:isolate;
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden;
 }
 .glass>div{padding:22px 24px}
@@ -161,11 +170,13 @@ body:not(.motion-on) .rise{opacity:1;transform:none}
 .video-strip{position:relative;height:50vh;min-height:340px;overflow:hidden;border-block:1px solid var(--line);background:#000}
 .video-strip video{width:100%;height:100%;object-fit:cover;opacity:.92}
 .threads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.threads path{fill:none;stroke:var(--neon);stroke-width:1.4;opacity:.5;stroke-dasharray:14 10;animation:threadFlow 2.6s linear infinite}
-.threads path:nth-child(2){animation-duration:3.4s;opacity:.32}
-.threads path:nth-child(3){animation-duration:2.1s;opacity:.42}
-.threads path:nth-child(4){animation-duration:4.1s;opacity:.25}
-@keyframes threadFlow{to{stroke-dashoffset:-240}}
+.threads path{fill:none;stroke:var(--neon);stroke-width:1.4;stroke-dasharray:14 10}
+/* Flow is now compositor-only: each thread is a group holding two copies of a
+   720-wide wave that tiles seamlessly, and the group slides -720 units in a loop.
+   Group speeds match the old dash-flow rates; same dashes, opacities and neon look.
+   (Previously stroke-dashoffset was animated, repainting the paths every frame.) */
+.threads .tm{will-change:transform;animation:threadSlide var(--dur,7.8s) linear infinite}
+@keyframes threadSlide{to{transform:translateX(-720px)}}
 .video-cap{
   position:absolute;left:clamp(20px,5vw,60px);bottom:24px;z-index:2;
   background:rgba(5,5,5,.55);border:1px solid rgba(255,255,255,.12);border-radius:10px;
@@ -175,7 +186,11 @@ body:not(.motion-on) .rise{opacity:1;transform:none}
 .video-cap .s{font-size:11.5px;color:var(--muted);margin-top:4px;letter-spacing:.06em}
 
 /* ============ SECTIONS ============ */
-.section{padding:96px clamp(20px,6vw,84px);max-width:1360px;margin:0 auto}
+.section{padding:96px clamp(20px,6vw,84px);max-width:1360px;margin:0 auto;
+  /* Off-screen sections skip layout/paint until they approach the viewport.
+     Identical rendering once shown; the intrinsic size just reserves the space. */
+  content-visibility:auto;contain-intrinsic-size:auto 720px}
+#syllabus{contain-intrinsic-size:auto 1500px}
 .sec-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:40px}
 .sec-head .kicker{font-size:11.5px;letter-spacing:.44em;text-transform:uppercase;color:var(--neon);margin-bottom:10px}
 .sec-head h2{font-family:var(--font-display);font-weight:400;font-size:clamp(1.7rem,4.4vw,2.9rem);color:#fff;letter-spacing:.02em}
@@ -319,10 +334,16 @@ html:has(body.motion-off){scroll-behavior:auto}
     <source src="https://videos.pexels.com/video-files/35897330/15226116_1280_720_30fps.mp4" type="video/mp4">
   </video>
   <svg class="threads" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M-20 70 C 300 40, 620 110, 960 70 S 1400 50, 1470 84"/>
-    <path d="M-20 170 C 320 210, 700 130, 1020 180 S 1380 210, 1470 160"/>
-    <path d="M-20 268 C 280 240, 660 310, 1000 262 S 1400 250, 1470 286"/>
-    <path d="M-20 350 C 340 380, 720 322, 1060 356 S 1390 380, 1470 340"/>
+    <defs>
+      <path id="tw1" d="M0,70 C120,110 240,30 360,70 C480,110 600,30 720,70"/>
+      <path id="tw2" d="M0,170 C120,130 240,210 360,170 C480,130 600,210 720,170"/>
+      <path id="tw3" d="M0,265 C120,300 240,230 360,265 C480,300 600,230 720,265"/>
+      <path id="tw4" d="M0,350 C120,320 240,385 360,350 C480,320 600,385 720,350"/>
+    </defs>
+    <g class="tm" style="--dur:7.8s;opacity:.5"><use href="#tw1"/><use href="#tw1" x="720"/></g>
+    <g class="tm" style="--dur:10.2s;opacity:.32"><use href="#tw2"/><use href="#tw2" x="720"/></g>
+    <g class="tm" style="--dur:6.3s;opacity:.42"><use href="#tw3"/><use href="#tw3" x="720"/></g>
+    <g class="tm" style="--dur:12.3s;opacity:.25"><use href="#tw4"/><use href="#tw4" x="720"/></g>
   </svg>
   <div class="video-cap">
     <div class="t">INSIDE THE MILL — THE LOOM IN MOTION</div>
@@ -498,15 +519,25 @@ html:has(body.motion-off){scroll-behavior:auto}
   var img=document.getElementById('androidImg');
   var glow=document.getElementById('glowLayer');
   var fine=window.matchMedia('(pointer: fine)').matches;
-  var tx=0,ty=0,cx=0,cy=0,sT=0,sC=0,ticking=false;
+  var tx=0,ty=0,cx=0,cy=0,sT=0,sC=0,ticking=false,rafId=null;
   function loop(){
     cx+=(tx-cx)*.06; cy+=(ty-cy)*.06; sC+=(sT-sC)*.08;
     if(img) img.style.transform='translate3d('+(cx*.6)+'px,'+(cy*.6+sC)+'px,0)';
     if(glow) glow.style.translate=(cx*-.8)+'px '+(cy*-.8)+'px';
-    if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1||Math.abs(sT-sC)>.1){ requestAnimationFrame(loop); }
-    else ticking=false;
+    if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1||Math.abs(sT-sC)>.1){ rafId=requestAnimationFrame(loop); }
+    else { ticking=false; rafId=null; }
   }
-  function kick(){ if(!ticking && motionOn){ ticking=true; requestAnimationFrame(loop); } }
+  function kick(){ if(!ticking && motionOn && !document.hidden){ ticking=true; rafId=requestAnimationFrame(loop); } }
+  /* Freeze the loop while the tab is hidden (invisible to the user, pure CPU saving);
+     it restarts on the next pointer/scroll input or when the tab becomes visible. */
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){
+      if(rafId!==null){ cancelAnimationFrame(rafId); rafId=null; }
+      ticking=false;
+    }else{
+      kick();
+    }
+  });
   if(fine){
     window.addEventListener('pointermove',function(e){
       if(!motionOn) return;

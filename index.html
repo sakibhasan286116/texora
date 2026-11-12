@@ -208,6 +208,8 @@ body:not(.motion-on) .rise{opacity:1;transform:none}
 .subj{list-style:none}
 .subj li{padding:7px 0;border-top:1px dashed rgba(255,255,255,.09);font-size:14.5px;color:#dcdcd2;display:flex;gap:9px}
 .subj li::before{content:"▸";color:var(--neon);flex:none}
+.subj .code{color:var(--neon);font-weight:700;font-size:12.5px;letter-spacing:.04em;flex:none;padding-top:2px}
+.subj .cr{margin-left:auto;flex:none;color:#9a9a90;font-size:12.5px;padding-top:2px;white-space:nowrap}
 .note-soon{display:inline-block;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#050505;background:var(--neon);
   padding:5px 11px;border-radius:99px;font-weight:700}
 .coming{color:var(--muted);font-size:14.5px;border-top:1px dashed rgba(255,255,255,.09);padding-top:14px}
@@ -365,15 +367,16 @@ html:has(body.motion-off){scroll-behavior:auto}
       <div class="term-num">1<em>.</em>1</div>
       <div class="term-lvl">Level 1 · Term 1</div>
       <ul class="subj">
-        <li>Mathematics-I</li>
-        <li>Physics-I</li>
-        <li>Chemistry-I</li>
-        <li>Communicative English</li>
-        <li>Engineering Drawing-I</li>
-        <li>Fundamentals of Textile Engineering</li>
-        <li>Industrial Visit</li>
+        <li><span class="code">MATH-1101</span> Mathematics-I <span class="cr">3.0 cr</span></li>
+        <li><span class="code">ME-1102</span> Engineering Drawing-I <span class="cr">1.5 cr</span></li>
+        <li><span class="code">PHY-1103</span> Physics-I <span class="cr">3.0 cr</span></li>
+        <li><span class="code">PHY-1104</span> Physics-I Sessional <span class="cr">1.5 cr</span></li>
+        <li><span class="code">CHE-1105</span> Chemistry-I <span class="cr">3.0 cr</span></li>
+        <li><span class="code">CHE-1106</span> Chemistry-I Sessional <span class="cr">1.5 cr</span></li>
+        <li><span class="code">HUM-1107</span> Communicative English <span class="cr">1.5 cr</span></li>
+        <li><span class="code">TE-1109</span> Fundamentals of Textile Engineering <span class="cr">3.0 cr</span></li>
       </ul>
-      <span class="note-soon">Full course list updating soon</span>
+      <span class="note-soon">8 courses · 18.0 credits · 45 class hours each</span>
     </article>
     <article class="card rv" style="--i:1">
       <div class="term-num">1<em>.</em>2</div>

@@ -218,6 +218,8 @@ body:not(.motion-on) .rise{opacity:1;transform:none}
 .card h3{font-size:19px;font-weight:700;color:#fff;line-height:1.35}
 .card .desc{color:var(--muted);font-size:14px;line-height:1.6;margin-top:9px}
 .card .soon{margin-top:15px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d8d8cf}
+.card .plink{display:inline-block;margin-top:13px;color:var(--neon);font-weight:700;font-size:14px;text-decoration:none;border-bottom:1px dashed rgba(216,224,33,.55);padding-bottom:1px}
+.card .plink:hover{border-bottom-style:solid}
 .card.empty{border-style:dashed;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:170px;background:transparent}
 .empty-state{
   border:1.5px dashed rgba(255,255,255,.22);border-radius:var(--radius);padding:52px 30px;text-align:center;
@@ -449,7 +451,13 @@ html:has(body.motion-off){scroll-behavior:auto}
       <p class="desc">Textile Chemical Processing-I notes — scouring processes, bleaching agents, methods and process control.</p>
       <p class="soon">PDF link coming soon</p>
     </article>
-    <article class="card empty rv" style="--i:2">
+    <article class="card rv" style="--i:2">
+      <span class="tag">TE-1109 · Topic Notes</span>
+      <h3>Fundamentals of Textile Engineering</h3>
+      <p class="desc">Topic-by-topic explanatory notes for TE-1109 — no MCQ, with diagrams where a topic needs one.</p>
+      <a class="plink" href="notes/te-1109/introduction-to-textile.pdf" target="_blank" rel="noopener">Topic 1 — Introduction to Textile (PDF)</a>
+    </article>
+    <article class="card empty rv" style="--i:3">
       <span class="tag">In Preparation</span>
       <h3>More notes are being prepared</h3>
       <p class="desc">New course notes are added here as each term's material is ready.</p>

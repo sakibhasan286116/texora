@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Texora — Textile Engineering Study Hub</title>
+<meta name="description" content="Texora — study textile engineering smarter. The full syllabus, your notes and written-question practice, all in one place. Made by Sakib.">
+<meta name="theme-color" content="#050505">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Orbitron:wght@600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  /* Display font: swap this ONE line when the licensed "7th Service Semi-Condensed" file arrives */
+  --font-display:'Michroma','Orbitron',sans-serif;
+  --font-body:'Space Grotesk',system-ui,sans-serif;
+  --bg:#050505;
+  --panel:#0b0d09;
+  --panel-2:#101208;
+  --line:rgba(255,255,255,.08);
+  --txt:#f2f2ec;
+  --muted:#a3a398;
+  --neon:#ffe600;
+  --blue:#2e6bff;
+  --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--txt);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--neon);color:#050505}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+section{scroll-margin-top:84px}
+
+/* ============ HEADER ============ */
+header{
+  position:fixed;inset:0 0 auto 0;z-index:60;
+  display:flex;align-items:center;gap:28px;
+  padding:16px clamp(18px,4vw,44px);
+  background:linear-gradient(180deg,rgba(5,5,5,.88),rgba(5,5,5,.55) 70%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.logo{font-family:var(--font-display);font-size:19px;letter-spacing:.34em;color:#fff;white-space:nowrap}
+.logo b{color:var(--neon);font-weight:400}
+nav{display:flex;gap:clamp(14px,2.6vw,34px);margin-left:12px}
+nav a{
+  font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  padding:6px 2px;position:relative;transition:color .25s;
+}
+nav a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--neon);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.6,0,.2,1)}
+nav a:hover{color:#fff}
+nav a:hover::after{transform:scaleX(1)}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:18px}
+.texora-mini{font-size:11px;letter-spacing:.42em;color:var(--muted);white-space:nowrap}
+.motion-toggle{
+  display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;
+  color:var(--txt);font-family:var(--font-body);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  transition:border-color .25s, box-shadow .25s;
+}
+.motion-toggle:hover{border-color:rgba(255,230,0,.55);box-shadow:0 0 18px rgba(255,230,0,.14)}
+.motion-toggle .track{width:32px;height:17px;border-radius:999px;background:#2a2c22;position:relative;transition:background .25s;flex:none}
+.motion-toggle .track::after{content:"";position:absolute;top:2.5px;left:3px;width:12px;height:12px;border-radius:50%;background:#8b8d80;transition:transform .25s,background .25s}
+.motion-toggle[aria-checked="true"] .track{background:rgba(255,230,0,.28)}
+.motion-toggle[aria-checked="true"] .track::after{transform:translateX(14px);background:var(--neon)}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center}
+.grid-lines{
+  position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 12.5vw);
+  animation:gridShimmer 9s ease-in-out infinite;
+}
+@keyframes gridShimmer{0%,100%{opacity:.55}50%{opacity:1}}
+.hero-glow{
+  position:absolute;top:8%;right:-6%;width:62vw;height:62vw;max-width:820px;max-height:820px;
+  background:radial-gradient(circle,rgba(255,230,0,.17) 0%,rgba(255,230,0,.05) 42%,transparent 68%);
+  filter:blur(28px);border-radius:50%;pointer-events:none;
+  animation:breathe 4.2s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.09);opacity:1}}
+.android{
+  position:absolute;top:0;right:0;height:100%;width:min(57vw,780px);object-fit:cover;object-position:center 18%;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(0deg,transparent 0,#000 22%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(0deg,transparent 0,#000 22%);
+  mask-composite:intersect;
+  will-change:transform;
+}
+.hero-inner{position:relative;z-index:3;width:100%;padding:130px clamp(20px,7vw,96px) 210px}
+.blue-block{width:52px;height:13px;background:var(--blue);box-shadow:0 0 24px rgba(46,107,255,.55);margin-bottom:20px}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.5em;text-transform:uppercase;color:#fff;margin-bottom:14px}
+.eyebrow span{color:var(--neon)}
+h1{
+  font-family:var(--font-display);font-weight:400;color:#fff;
+  font-size:clamp(3.4rem,12.5vw,11.5rem);line-height:.98;letter-spacing:.015em;
+  text-shadow:0 0 60px rgba(255,230,0,.14);
+}
+.hero-sub{
+  margin-top:26px;max-width:480px;color:var(--muted);font-size:16.5px;line-height:1.65;
+  border-left:2px solid var(--neon);padding-left:18px;
+}
+.btn-go{
+  display:inline-flex;align-items:center;gap:10px;margin-top:34px;
+  border:1px solid rgba(255,255,255,.75);color:#fff;padding:14px 34px;border-radius:3px;
+  font-size:13px;letter-spacing:.3em;text-transform:uppercase;position:relative;overflow:hidden;
+  transition:color .3s,border-color .3s;background:transparent;cursor:pointer;font-family:var(--font-body);
+}
+.btn-go::before{content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;transform:skewX(-24deg);
+  background:linear-gradient(90deg,transparent,rgba(255,230,0,.35),transparent);transition:left .6s ease}
+.btn-go:hover{border-color:var(--neon);color:var(--neon)}
+.btn-go:hover::before{left:130%}
+.hero-meta{margin-top:44px;display:flex;gap:26px;flex-wrap:wrap;color:var(--muted);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase}
+.hero-meta b{color:#fff;font-weight:500}
+
+/* hero entrance */
+.rise{opacity:0;transform:translateY(26px)}
+body.motion-on .rise{animation:riseIn .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--d,0)*130ms)}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+body:not(.motion-on) .rise{opacity:1;transform:none}
+
+/* callouts */
+.callout{position:absolute;z-index:4;display:flex;align-items:center;gap:0;color:#e9e9e2}
+.callout .dot{width:9px;height:9px;border-radius:50%;background:var(--neon);box-shadow:0 0 0 5px rgba(255,230,0,.16),0 0 16px rgba(255,230,0,.8);flex:none}
+.callout .bar{height:1px;width:64px;background:linear-gradient(90deg,rgba(255,230,0,.85),rgba(255,255,255,.25))}
+.callout .lbl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;padding-left:12px;white-space:nowrap;text-shadow:0 2px 12px #000}
+.callout.head{top:31%;right:34.5%}
+.callout.body{top:58%;right:41%}
+
+/* side ornaments */
+.dot-col{position:absolute;left:22px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:13px}
+.dot-col i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.28);display:block}
+.dot-col i.on{background:var(--neon);box-shadow:0 0 10px rgba(255,230,0,.9);height:22px;border-radius:99px}
+.side-labels{position:absolute;right:20px;top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:22px;
+  font-size:10px;letter-spacing:.4em;color:rgba(255,255,255,.42);text-transform:uppercase}
+.side-labels span:nth-child(odd){color:rgba(255,230,0,.55)}
+
+/* glass panel */
+.glass{
+  position:absolute;z-index:5;right:clamp(18px,4vw,54px);bottom:34px;width:min(580px,calc(100vw - 36px));
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:rgba(14,15,11,.55);border:1px solid rgba(255,255,255,.1);border-radius:14px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);overflow:hidden;
+}
+.glass>div{padding:22px 24px}
+.glass>div+div{border-left:1px solid rgba(255,255,255,.09)}
+.glass h3{font-family:var(--font-display);font-size:12.5px;letter-spacing:.3em;color:var(--neon);margin-bottom:9px;font-weight:400}
+.glass p{font-size:13.5px;line-height:1.6;color:#cfcfc6}
+
+/* ============ VIDEO STRIP ============ */
+.video-strip{position:relative;height:50vh;min-height:340px;overflow:hidden;border-block:1px solid var(--line);background:#000}
+.video-strip video{width:100%;height:100%;object-fit:cover;opacity:.92}
+.threads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.threads path{fill:none;stroke:var(--neon);stroke-width:1.4;opacity:.5;stroke-dasharray:14 10;animation:threadFlow 2.6s linear infinite}
+.threads path:nth-child(2){animation-duration:3.4s;opacity:.32}
+.threads path:nth-child(3){animation-duration:2.1s;opacity:.42}
+.threads path:nth-child(4){animation-duration:4.1s;opacity:.25}
+@keyframes threadFlow{to{stroke-dashoffset:-240}}
+.video-cap{
+  position:absolute;left:clamp(20px,5vw,60px);bottom:24px;z-index:2;
+  background:rgba(5,5,5,.55);border:1px solid rgba(255,255,255,.12);border-radius:10px;
+  padding:12px 18px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.video-cap .t{font-family:var(--font-display);font-size:12px;letter-spacing:.24em;color:#fff}
+.video-cap .s{font-size:11.5px;color:var(--muted);margin-top:4px;letter-spacing:.06em}
+
+/* ============ SECTIONS ============ */
+.section{padding:96px clamp(20px,6vw,84px);max-width:1360px;margin:0 auto}
+.sec-head{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head .kicker{font-size:11.5px;letter-spacing:.44em;text-transform:uppercase;color:var(--neon);margin-bottom:10px}
+.sec-head h2{font-family:var(--font-display);font-weight:400;font-size:clamp(1.7rem,4.4vw,2.9rem);color:#fff;letter-spacing:.02em}
+.sec-head p{color:var(--muted);font-size:14.5px;margin-left:auto;letter-spacing:.05em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:18px}
+.card{
+  background:linear-gradient(160deg,var(--panel-2),var(--panel));border:1px solid var(--line);
+  border-radius:var(--radius);padding:26px 24px;position:relative;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;
+}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,230,0,.45);box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 26px rgba(255,230,0,.09)}
+.term-num{font-family:var(--font-display);font-size:30px;color:#fff}
+.term-num em{font-style:normal;color:var(--neon)}
+.term-lvl{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin:6px 0 16px}
+.subj{list-style:none}
+.subj li{padding:7px 0;border-top:1px dashed rgba(255,255,255,.09);font-size:14.5px;color:#dcdcd2;display:flex;gap:9px}
+.subj li::before{content:"▸";color:var(--neon);flex:none}
+.note-soon{display:inline-block;margin-top:16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#050505;background:var(--neon);
+  padding:5px 11px;border-radius:99px;font-weight:700}
+.coming{color:var(--muted);font-size:14.5px;border-top:1px dashed rgba(255,255,255,.09);padding-top:14px}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--neon);
+  border:1px solid rgba(255,230,0,.4);padding:4px 10px;border-radius:99px;margin-bottom:14px}
+.card h3{font-size:19px;font-weight:700;color:#fff;line-height:1.35}
+.card .desc{color:var(--muted);font-size:14px;line-height:1.6;margin-top:9px}
+.card .soon{margin-top:15px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#d8d8cf}
+.card.empty{border-style:dashed;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:170px;background:transparent}
+.empty-state{
+  border:1.5px dashed rgba(255,255,255,.22);border-radius:var(--radius);padding:52px 30px;text-align:center;
+  background:rgba(255,255,255,.02);
+}
+.empty-state .big{font-family:var(--font-display);font-size:clamp(1.05rem,2.6vw,1.5rem);color:#fff;line-height:1.6;max-width:640px;margin:0 auto}
+.empty-state .small{color:var(--muted);font-size:14.5px;margin-top:14px;line-height:1.65}
+.planner{display:grid;gap:14px;max-width:760px}
+.slot{
+  display:flex;align-items:center;gap:20px;background:linear-gradient(160deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:14px;padding:20px 24px;
+  transition:transform .35s,border-color .35s,box-shadow .35s;
+}
+.slot:hover{transform:translateX(8px);border-color:rgba(255,230,0,.45);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.slot .time{font-family:var(--font-display);font-size:14px;color:var(--neon);min-width:92px;letter-spacing:.06em}
+.slot .what{font-size:16.5px;color:#fff;font-weight:500}
+.slot .sub{font-size:13px;color:var(--muted);margin-top:2px}
+footer{
+  border-top:1px solid var(--line);padding:38px clamp(20px,6vw,84px);
+  display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  color:var(--muted);font-size:13px;letter-spacing:.08em;
+}
+footer .fbrand{font-family:var(--font-display);letter-spacing:.3em;color:#fff;font-size:14px}
+footer .fbrand b{color:var(--neon);font-weight:400}
+
+/* scroll reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0)*70ms)}
+.rv.in{opacity:1;transform:none}
+
+/* ============ MOTION OFF ============ */
+body.motion-off *,body.motion-off *::before,body.motion-off *::after{animation:none!important;transition:none!important}
+body.motion-off .rv{opacity:1;transform:none}
+body.motion-off{scroll-behavior:auto}
+html:has(body.motion-off){scroll-behavior:auto}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1020px){
+  .callout{display:none}
+}
+@media (max-width:860px){
+  nav{display:none}
+  .texora-mini{display:none}
+  .hero-inner{padding:118px 22px 250px}
+  .android{width:100vw;height:62%;top:auto;bottom:0;opacity:.5;object-position:center 12%;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 34%),linear-gradient(90deg,transparent 0,#000 14%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 34%),linear-gradient(90deg,transparent 0,#000 14%)}
+  .glass{grid-template-columns:1fr;bottom:20px}
+  .glass>div+div{border-left:none;border-top:1px solid rgba(255,255,255,.09)}
+  .dot-col,.side-labels{display:none}
+  .video-strip{height:38vh;min-height:250px}
+  .section{padding:70px 20px}
+  .sec-head p{margin-left:0}
+  .slot .time{min-width:78px;font-size:12.5px}
+}
+</style>
+</head>
+<body class="motion-on">
+
+<header>
+  <a class="logo" href="#home">TEX<b>O</b>RA</a>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#syllabus">Syllabus</a>
+    <a href="#library">Library</a>
+    <a href="#qbank">Question Bank</a>
+    <a href="#planner">Planner</a>
+  </nav>
+  <div class="head-right">
+    <span class="texora-mini">TEX&nbsp;ORA</span>
+    <button class="motion-toggle" id="motionToggle" role="switch" aria-checked="true" aria-label="Toggle motion">
+      Motion <span class="track"></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="grid-lines"></div>
+  <div class="hero-glow" id="glowLayer"></div>
+  <img class="android" id="androidImg" src="/assets/android-bust.webp" alt="Futuristic android — the face of smart textile technology" fetchpriority="high">
+  <div class="dot-col" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+  <div class="side-labels" aria-hidden="true"><span>TX</span><span>EN</span><span>NT</span><span>SM</span><span>AI</span></div>
+
+  <div class="callout head" aria-hidden="true"><span class="lbl">Modern Technology</span><span class="bar"></span><span class="dot"></span></div>
+  <div class="callout body" aria-hidden="true"><span class="lbl">Smart Textiles</span><span class="bar"></span><span class="dot"></span></div>
+
+  <div class="hero-inner">
+    <div class="blue-block rise" style="--d:0"></div>
+    <p class="eyebrow rise" style="--d:1">Here and <span>Now</span></p>
+    <h1 class="rise" style="--d:2">TEXTILE</h1>
+    <p class="hero-sub rise" style="--d:3">Dive deeper into the world of modern textile engineering — syllabus, notes and written-question practice, all in one place.</p>
+    <div class="rise" style="--d:4"><a class="btn-go" href="#syllabus">Let's Go →</a></div>
+    <div class="hero-meta rise" style="--d:5">
+      <span><b>NITER</b> — B.Sc. in Textile Engineering</span>
+      <span><b>8</b> Terms</span>
+      <span><b>Written</b> Exam Practice</span>
+    </div>
+  </div>
+
+  <div class="glass rise" style="--d:6">
+    <div>
+      <h3>TECHNOLOGY</h3>
+      <p>Smart looms, automation and AI are reshaping how fabric is made.</p>
+    </div>
+    <div>
+      <h3>INNOVATION</h3>
+      <p>New fibres and processes are redefining global textiles and human progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VIDEO STRIP ================= -->
+<div class="video-strip" aria-label="Inside the mill — the loom in motion">
+  <video id="loomVideo" autoplay muted loop playsinline preload="metadata" poster="/assets/loom-poster.jpg">
+    <source src="https://videos.pexels.com/video-files/35897330/15226114_960_540_30fps.mp4" media="(max-width: 768px)" type="video/mp4">
+    <source src="https://videos.pexels.com/video-files/35897330/15226116_1280_720_30fps.mp4" type="video/mp4">
+  </video>
+  <svg class="threads" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M-20 70 C 300 40, 620 110, 960 70 S 1400 50, 1470 84"/>
+    <path d="M-20 170 C 320 210, 700 130, 1020 180 S 1380 210, 1470 160"/>
+    <path d="M-20 268 C 280 240, 660 310, 1000 262 S 1400 250, 1470 286"/>
+    <path d="M-20 350 C 340 380, 720 322, 1060 356 S 1390 380, 1470 340"/>
+  </svg>
+  <div class="video-cap">
+    <div class="t">INSIDE THE MILL — THE LOOM IN MOTION</div>
+    <div class="s">Royalty-free footage · Dharmaraj Sunar via Pexels</div>
+  </div>
+</div>
+
+<!-- ================= SYLLABUS ================= -->
+<section class="section" id="syllabus">
+  <div class="sec-head rv">
+    <div>
+      <div class="kicker">Course Structure</div>
+      <h2>Syllabus</h2>
+    </div>
+    <p>Level 1 Term 1 → Level 4 Term 2</p>
+  </div>
+  <div class="grid">
+    <article class="card rv" style="--i:0">
+      <div class="term-num">1<em>.</em>1</div>
+      <div class="term-lvl">Level 1 · Term 1</div>
+      <ul class="subj">
+        <li>Mathematics-I</li>
+        <li>Physics-I</li>
+        <li>Chemistry-I</li>
+        <li>Communicative English</li>
+        <li>Engineering Drawing-I</li>
+        <li>Fundamentals of Textile Engineering</li>
+        <li>Industrial Visit</li>
+      </ul>
+      <span class="note-soon">Full course list updating soon</span>
+    </article>
+    <article class="card rv" style="--i:1">
+      <div class="term-num">1<em>.</em>2</div>
+      <div class="term-lvl">Level 1 · Term 2</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:2">
+      <div class="term-num">2<em>.</em>1</div>
+      <div class="term-lvl">Level 2 · Term 1</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:3">
+      <div class="term-num">2<em>.</em>2</div>
+      <div class="term-lvl">Level 2 · Term 2</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:4">
+      <div class="term-num">3<em>.</em>1</div>
+      <div class="term-lvl">Level 3 · Term 1</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:5">
+      <div class="term-num">3<em>.</em>2</div>
+      <div class="term-lvl">Level 3 · Term 2</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:6">
+      <div class="term-num">4<em>.</em>1</div>
+      <div class="term-lvl">Level 4 · Term 1</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+    <article class="card rv" style="--i:7">
+      <div class="term-num">4<em>.</em>2</div>
+      <div class="term-lvl">Level 4 · Term 2</div>
+      <p class="coming">Course list coming soon</p>
+    </article>
+  </div>
+</section>
+
+<!-- ================= LIBRARY ================= -->
+<section class="section" id="library">
+  <div class="sec-head rv">
+    <div>
+      <div class="kicker">Study Notes</div>
+      <h2>Library</h2>
+    </div>
+    <p>Notes, organised by course</p>
+  </div>
+  <div class="grid">
+    <article class="card rv" style="--i:0">
+      <span class="tag">Study Notes</span>
+      <h3>AMT-I — Marker &amp; Spreading</h3>
+      <p class="desc">Apparel Manufacturing Technology-I notes — marker making, marker efficiency, spreading methods and fabric utilisation.</p>
+      <p class="soon">PDF link coming soon</p>
+    </article>
+    <article class="card rv" style="--i:1">
+      <span class="tag">Study Notes</span>
+      <h3>TCC-I — Scouring &amp; Bleaching</h3>
+      <p class="desc">Textile Chemical Processing-I notes — scouring processes, bleaching agents, methods and process control.</p>
+      <p class="soon">PDF link coming soon</p>
+    </article>
+    <article class="card empty rv" style="--i:2">
+      <span class="tag">In Preparation</span>
+      <h3>More notes are being prepared</h3>
+      <p class="desc">New course notes are added here as each term's material is ready.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ================= QUESTION BANK ================= -->
+<section class="section" id="qbank">
+  <div class="sec-head rv">
+    <div>
+      <div class="kicker">Written Practice</div>
+      <h2>Question Bank</h2>
+    </div>
+    <p>Written exams only — no MCQ</p>
+  </div>
+  <div class="empty-state rv">
+    <p class="big">Written question sets will appear here, organised by course.</p>
+    <p class="small">Textile exams are written — practice with real written questions, structured by course and topic.</p>
+  </div>
+</section>
+
+<!-- ================= STUDY PLANNER ================= -->
+<section class="section" id="planner">
+  <div class="sec-head rv">
+    <div>
+      <div class="kicker">Daily Routine</div>
+      <h2>Study Planner</h2>
+    </div>
+    <p>Evening routine — edit coming soon</p>
+  </div>
+  <div class="planner">
+    <div class="slot rv" style="--i:0"><span class="time">6:00 PM</span><div><div class="what">Main subject study</div><div class="sub">Deep-focus session on the day's core course</div></div></div>
+    <div class="slot rv" style="--i:1"><span class="time">7:15 PM</span><div><div class="what">Break</div><div class="sub">Rest, refresh, step away from the desk</div></div></div>
+    <div class="slot rv" style="--i:2"><span class="time">7:30 PM</span><div><div class="what">Second subject</div><div class="sub">Rotate through the term's other courses</div></div></div>
+    <div class="slot rv" style="--i:3"><span class="time">8:30 PM</span><div><div class="what">Written practice</div><div class="sub">Answer written questions by hand, exam-style</div></div></div>
+    <div class="slot rv" style="--i:4"><span class="time">9:15 PM</span><div><div class="what">Revision &amp; wrap-up</div><div class="sub">Review the day's notes and plan tomorrow</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <span class="fbrand">TEX<b>O</b>RA</span>
+  <span>Texora — Made by Sakib</span>
+  <span>NITER · B.Sc. in Textile Engineering</span>
+</footer>
+
+<script>
+(function(){
+  var body=document.body;
+  var toggle=document.getElementById('motionToggle');
+  var video=document.getElementById('loomVideo');
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stored=null; try{stored=localStorage.getItem('texora-motion');}catch(e){}
+  var motionOn = stored!==null ? stored==='on' : !reduce;
+
+  function applyMotion(){
+    body.classList.toggle('motion-on',motionOn);
+    body.classList.toggle('motion-off',!motionOn);
+    toggle.setAttribute('aria-checked',motionOn?'true':'false');
+    if(video){ if(motionOn){ var p=video.play(); if(p&&p.catch)p.catch(function(){}); } else { video.pause(); } }
+  }
+  toggle.addEventListener('click',function(){
+    motionOn=!motionOn;
+    try{localStorage.setItem('texora-motion',motionOn?'on':'off');}catch(e){}
+    applyMotion();
+  });
+  applyMotion();
+
+  /* Scroll-triggered reveals */
+  var rvEls=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    },{threshold:.12});
+    rvEls.forEach(function(el){ io.observe(el); });
+  }else{
+    rvEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* Parallax — pointer + scroll, rAF-lerped, disabled on touch */
+  var img=document.getElementById('androidImg');
+  var glow=document.getElementById('glowLayer');
+  var fine=window.matchMedia('(pointer: fine)').matches;
+  var tx=0,ty=0,cx=0,cy=0,sT=0,sC=0,ticking=false;
+  function loop(){
+    cx+=(tx-cx)*.06; cy+=(ty-cy)*.06; sC+=(sT-sC)*.08;
+    if(img) img.style.transform='translate3d('+(cx*.6)+'px,'+(cy*.6+sC)+'px,0)';
+    if(glow) glow.style.translate=(cx*-.8)+'px '+(cy*-.8)+'px';
+    if(Math.abs(tx-cx)>.1||Math.abs(ty-cy)>.1||Math.abs(sT-sC)>.1){ requestAnimationFrame(loop); }
+    else ticking=false;
+  }
+  function kick(){ if(!ticking && motionOn){ ticking=true; requestAnimationFrame(loop); } }
+  if(fine){
+    window.addEventListener('pointermove',function(e){
+      if(!motionOn) return;
+      tx=(e.clientX/window.innerWidth-.5)*22;
+      ty=(e.clientY/window.innerHeight-.5)*16;
+      kick();
+    },{passive:true});
+  }
+  window.addEventListener('scroll',function(){
+    if(!motionOn) return;
+    var y=window.scrollY;
+    sT=y<window.innerHeight ? y*.12 : 0;
+    kick();
+  },{passive:true});
+
+  /* Service worker */
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){
+      navigator.serviceWorker.register('/sw.js').catch(function(){});
+    });
+  }
+})();
+</script>
+</body>
+</html>

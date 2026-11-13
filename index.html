@@ -50,7 +50,10 @@ header{
   background:linear-gradient(180deg,rgba(5,5,5,.88),rgba(5,5,5,.55) 70%,transparent);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
-.logo{font-family:var(--font-display);font-size:19px;letter-spacing:.34em;color:#fff;white-space:nowrap}
+.logo{font-family:var(--font-display);font-size:19px;letter-spacing:.34em;color:#fff;white-space:nowrap;display:inline-flex;align-items:center;gap:11px}
+.logo img{width:36px;height:36px;border-radius:10px;display:block}
+footer .fbrand{display:inline-flex;align-items:center;gap:9px}
+footer .fbrand img{width:24px;height:24px;border-radius:7px;display:block}
 .logo b{color:var(--neon);font-weight:400}
 nav{display:flex;gap:clamp(14px,2.6vw,34px);margin-left:12px}
 nav a{
@@ -281,7 +284,7 @@ html:has(body.motion-off){scroll-behavior:auto}
 <body class="motion-on">
 
 <header>
-  <a class="logo" href="#home">TEX<b>O</b>RA</a>
+  <a class="logo" href="#home"><img src="/icons/icon.svg" alt="Texora logo" width="36" height="36">TEX<b>O</b>RA</a>
   <nav>
     <a href="#home">Home</a>
     <a href="#syllabus">Syllabus</a>
@@ -580,7 +583,7 @@ html:has(body.motion-off){scroll-behavior:auto}
 </section>
 
 <footer>
-  <span class="fbrand">TEX<b>O</b>RA</span>
+  <span class="fbrand"><img src="/icons/icon.svg" alt="" width="24" height="24">TEX<b>O</b>RA</span>
   <span>Texora — Made by Sakib</span>
   <span>NITER · B.Sc. in Textile Engineering</span>
 </footer>
